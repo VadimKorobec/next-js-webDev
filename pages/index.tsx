@@ -20,18 +20,26 @@ const Home = ({ socials }) => {
 export default Home;
 
 export const getStaticProps = async () => {
-  const response = await fetch(`${API_HOST}/socials`);
-  const data = await response.json();
+  try {
+    const response = await fetch(`${API_HOST}/socials`);
+    const data = await response.json();
 
-  if (!data) {
+    if (!data) {
+      return {
+        notFound: true,
+      };
+    }
+
     return {
-      notFound: true,
+      props: {
+        socials: data,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        socials: null,
+      },
     };
   }
-
-  return {
-    props: {
-      socials: data,
-    },
-  };
 };
